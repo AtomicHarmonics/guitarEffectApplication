@@ -16,4 +16,4 @@ To run:
 
 You should now be able to hear a tremolo effect onto the incomming audio.
 You may have to 'wire' up the input audio device to the application and 
-from the application to the output audio device vai QJackCtl.
+from the application to the output audio device via QJackCtl.
