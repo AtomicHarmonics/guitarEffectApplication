@@ -195,7 +195,7 @@ main ( int argc, char *argv[] )
      * it.
      */
 
-    ports = jack_get_ports ( client, NULL, NULL, JackPortIsPhysical|JackPortIsOutput );
+    ports = jack_get_ports ( client, NULL, NULL, JackPortIsOutput );
     if ( ports == NULL )
     {
         fprintf ( stderr, "no physical capture ports\n" );
