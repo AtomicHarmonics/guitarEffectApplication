@@ -14,6 +14,7 @@
 #include <unistd.h>
 #endif
 #include <jack/jack.h>
+#include "audioEffects.h"
 
 #ifndef M_PI
 #define M_PI  (3.14159265)
@@ -115,7 +116,8 @@ main ( int argc, char *argv[] )
     jack_options_t options = JackNullOption;
     jack_status_t status;
     paTestData data;
-
+    audioEffects a;
+    volatile int x = a.returnFour();
     if ( argc >= 2 )        /* client name specified? */
     {
         client_name = argv[1];

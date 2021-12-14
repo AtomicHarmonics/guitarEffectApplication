@@ -10,8 +10,8 @@ include_directories(inc)
 
 # Specify here the libraries this program depends on
 target_link_libraries(myApp
+audioEffectsLibSrc
 )
-
 find_package(PkgConfig)
 if (PKG_CONFIG_FOUND)
   pkg_check_modules(JACK "jack")
