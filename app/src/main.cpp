@@ -16,23 +16,21 @@
 #include <jack/jack.h>
 #include "audioEffects.h"
 
-#ifndef M_PI
-#define M_PI  (3.14159265)
-#endif
+
 
 jack_port_t **input_ports;
 jack_port_t **output_ports;
 jack_client_t *client;
 
-#define TABLE_SIZE   (512)
-typedef struct
-{
-	float sine[TABLE_SIZE];
-	int left_phase;
-	int right_phase;
-    int counter;
-}
-paTestData;
+// #define TABLE_SIZE   (512)
+// typedef struct
+// {
+// 	float sine[TABLE_SIZE];
+// 	int left_phase;
+// 	int right_phase;
+//     int counter;
+// }
+// paTestData;
 
 
 static void signal_handler ( int sig )
@@ -55,7 +53,7 @@ process ( jack_nframes_t nframes, void *arg )
 {
     int i;
     jack_default_audio_sample_t *in, *out;
-    paTestData *data = (paTestData*)arg;
+    audioEffects *data = (audioEffects*)arg;
     for ( i = 1; i < 3; i++ )
     {
         if(i == 2)
@@ -74,21 +72,7 @@ process ( jack_nframes_t nframes, void *arg )
         }
         else
         {
-            for(int x = 0; x < nframes; x++)
-            {
-                out[x] = 0.0;
-                int maxCount = 1;
-                volatile int opCount = 0;
-                for(volatile int zx =  0; zx < maxCount; zx++)
-                {
-                    out[x] += (12.0/maxCount) * in[x] * data->sine[(data->counter/22)%TABLE_SIZE];
-                }
-                data->counter += 1;
-                if(data->counter > 500000)
-                {
-                    data->counter = 0;
-                }
-            }
+            data->tremoloEffect(in,out,nframes);
         }
     }
     return 0;
@@ -115,7 +99,6 @@ main ( int argc, char *argv[] )
     const char *server_name = NULL;
     jack_options_t options = JackNullOption;
     jack_status_t status;
-    paTestData data;
     audioEffects a;
     volatile int x = a.returnFour();
     if ( argc >= 2 )        /* client name specified? */
@@ -140,13 +123,6 @@ main ( int argc, char *argv[] )
             client_name++;
         }
     }
-
-    for( i=0; i<TABLE_SIZE; i++ )
-	{
-		data.sine[i] = 0.2 * (float) sin( ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
-	}
-    data.counter = 0;
-	data.left_phase = data.right_phase = 0;
 
     /* open a client connection to the JACK server */
 
@@ -175,7 +151,7 @@ main ( int argc, char *argv[] )
        there is work to be done.
     */
 
-    jack_set_process_callback ( client, process,&data );
+    jack_set_process_callback ( client, process,&a );
 
     /* tell the JACK server to call `jack_shutdown()' if
        it ever shuts down, either entirely, or if it
