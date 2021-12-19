@@ -37,7 +37,7 @@ void audioEffects::tremoloEffect(float *inputBuffer, float *outputBuffer, size_t
         //Multiply input buffer by sin wave, we also multiple 12.0 just for a volume increase, since it's fairly quiet without any extra multiplication
         outputBuffer[x] = 12.0 * inputBuffer[x] * sine[(tremoloCounter/sineWaveDivisor)%TABLE_SIZE];
         tremoloCounter += 1;
-        //resetting our tremolo counter arbitrarily after 500000, to avoid overflows (technically we don't need this since tremolo is an unsigned int...)
+        //resetting our tremolo counter arbitrarily after 500000, to avoid overflows (technically we don't need this since tremoloCounter is an unsigned int...)
         if(tremoloCounter > 500000)
         {
             tremoloCounter = 0;
