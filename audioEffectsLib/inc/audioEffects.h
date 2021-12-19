@@ -13,8 +13,9 @@ public:
     audioEffects();
     ~audioEffects();
     int returnFour();
-    void tremoloEffect(float *inputBuffer, float *outputBuffer, size_t size);
-    float sine[TABLE_SIZE];
-    int counter;
+    //Simple tremolo effect that just multiplies the input signal by a sine wave, has numOscPerSecond to control how 'fast' the osciliation effect is
+    void tremoloEffect(float *inputBuffer, float *outputBuffer, size_t size, float numOscPerSecond, unsigned int sampleRate);
+    float sine[TABLE_SIZE]; //table of sine values
+    size_t tremoloCounter; //Counter variable for our tremoloEffect, it is to determine how far in the sine wave we are
 };
 #endif  
