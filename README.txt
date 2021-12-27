@@ -4,15 +4,27 @@ sudo apt install jackd2
 sudo apt install libjack-jackd2-dev
 sudo apt install cmake
 
+Figure out what version of python is installed on your PC by running 'python' or 'python3' in a terminal. For example mine is '3.9.7'. Use that number to determine which packages to install:
+sudo apt-get install python3-matplotlib python3-numpy python3.9-dev
+
+Also change the audioEffectsLib/graphTests/CMakeLists.txt for your version of python (just the first two numbers) 
+
 To clone this project:
 1.) git clone https://github.com/raoufahmed248/guitarEffectApplication.git
 2.) cd guitarEffectApplication
+
+
+
+
 
 To build:
 1.) mkdir build
 2.) cd build
 3.) cmake ..
 4.) make
+
+
+
 
 
 To run the effects application:
