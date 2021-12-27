@@ -14,17 +14,11 @@ To clone this project:
 2.) cd guitarEffectApplication
 
 
-
-
-
 To build:
 1.) mkdir build
 2.) cd build
 3.) cmake ..
 4.) make
-
-
-
 
 
 To run the effects application:
@@ -51,8 +45,3 @@ Tips/General Knowledge:
 The way this repo is setup, the Makefile that the cmake generated will build all 
 components in this library. In laymans terms, if you make any changes to the code in this repo,
 run the make command inside the build directory to build it. The resulting binaries are stored in build/bin . You won't need to run the cmake command anymore unless you change a CMakeLists.txt file anywhere in the repo.
-
-
-
-
-
