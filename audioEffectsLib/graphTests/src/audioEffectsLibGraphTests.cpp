@@ -2,6 +2,7 @@
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
 int main() {
-    plt::plot({1,3,2,4});
+    audioEffects x;
+    plt::plot({1,3,2,x.returnFour()});
     plt::show();
 }
