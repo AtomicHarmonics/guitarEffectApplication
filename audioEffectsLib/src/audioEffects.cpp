@@ -13,7 +13,7 @@ audioEffects::audioEffects()
     tremoloCounter = 0;
     for(int  i=0; i<TABLE_SIZE; i++ )
 	{
-		sine[i] = 0.2 * (float) sin( ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
+		sine[i] = 0.2 * (float) sin( ((double)i/(double)TABLE_SIZE) * PI * 2. );
 	}
 }
 
@@ -47,22 +47,17 @@ void audioEffects::tremoloEffect(float *inputBuffer, float *outputBuffer, size_t
     }
 }
 
-void audioEffects::tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float numOscPerSecond, int depth)
-{
+void audioEffects::tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float freq, int depth)
+{   // freq: numOscPerSecond
     float a = depth/200;
-    float offset = 1 - a;
+    float offset = 1 - a; // bounds magnitude of output: [0, |input|]
     
     //on matlab, vector lfo is multiplied with input vector
     for(int i = 0; i < size; i++)
     {
-        
-
-
+        outputBuffer[i] = inputBuffer[i] * a * sin(2. * PI * freq * (i + 1)) + offset;
     }
-
 }
-
-
 
 void audioEffects::distortEffect(float *inputBuffer, float *outputBuffer, size_t size, float thresh)
 {
@@ -73,19 +68,16 @@ void audioEffects::distortEffect(float *inputBuffer, float *outputBuffer, size_t
         else if(inputBuffer[i] < -thresh)
             outputBuffer[i] = -thresh;
         else
-            outBuffer[i] = inputBuffer[i];
-
+            outputBuffer[i] = inputBuffer[i];
     }
-
 }
 
 void audioEffects::overdriveEffect(float *inputBuffer, float *outputBuffer, size_t size, float a)
 {
     for(int i = 0; i < size; i++)
     {
-        outputBuffer[i] = (2./M_PI) * atan(inputBuffer[i] * a); // double atan(double x)
-    }
-
+        outputBuffer[i] = (2./PI) * atan(inputBuffer[i] * a); // double atan(double x)
+    }  
 }
 
 

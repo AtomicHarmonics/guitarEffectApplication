@@ -3,8 +3,8 @@
 #define audioEffects_h
 
 #define TABLE_SIZE   (512)
-#ifndef M_PI
-#define M_PI  (3.14159265)
+#ifndef PI
+#define PI  (3.14159265)
 #endif
 #include  <stddef.h>
 #include <math.h>
@@ -19,7 +19,7 @@ public:
     size_t tremoloCounter; //Counter variable for our tremoloEffect, it is to determine how far in the sine wave we are
 
     //adding new effects
-    void tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float numOscPerSecond, int depth);
+    void tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float freq, int depth);
     void distortEffect(float *inputBuffer, float *outputBuffer, size_t size, float thresh);
     void overdriveEffect(float *inputBuffer, float *outputBuffer, size_t size, float a);
 
