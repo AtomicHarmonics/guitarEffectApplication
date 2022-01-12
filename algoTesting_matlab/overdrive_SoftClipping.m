@@ -5,7 +5,7 @@ clear; clc;
 t = (0:length(in)-1)/Fs;
 t = t(:); %?
 
-%%for sinwave input: uncomment next 4 lines & comment out other 't'
+% %for sinwave input: uncomment next 4 lines & comment out other 't'
 % Fs = 44100; Ts = 1/Fs;
 % f = 3;
 % t = (0: Ts: 1).'; %  .' ??
@@ -18,7 +18,7 @@ t = t(:); %?
 
 % creating algorithm
 out = in;
-a = 3; %level of clipping: 0-1
+a = 1; %level of clipping: 0-1
 for i = 1:(length(out))
     %%%%%% Cubic soft clipping %%%%%%
     %out(i) = out(i) - a * (2/3)*out(i); %(1/3), ratio can be increased for more clipping

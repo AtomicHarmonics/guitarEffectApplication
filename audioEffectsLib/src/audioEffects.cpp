@@ -1,6 +1,8 @@
 #include "audioEffects.h"
 #include <stdio.h>
 #include <iostream>
+#include <math.h>
+
 int audioEffects::returnFour()
 {
     return 4;
@@ -44,3 +46,47 @@ void audioEffects::tremoloEffect(float *inputBuffer, float *outputBuffer, size_t
         }
     }
 }
+
+void audioEffects::tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float numOscPerSecond, int depth)
+{
+    float a = depth/200;
+    float offset = 1 - a;
+    
+    //on matlab, vector lfo is multiplied with input vector
+    for(int i = 0; i < size; i++)
+    {
+        
+
+
+    }
+
+}
+
+
+
+void audioEffects::distortEffect(float *inputBuffer, float *outputBuffer, size_t size, float thresh)
+{
+    for(int i = 0; i < size; i++)
+    {
+        if(inputBuffer[i] > thresh)
+            outputBuffer[i] = thresh;
+        else if(inputBuffer[i] < -thresh)
+            outputBuffer[i] = -thresh;
+        else
+            outBuffer[i] = inputBuffer[i];
+
+    }
+
+}
+
+void audioEffects::overdriveEffect(float *inputBuffer, float *outputBuffer, size_t size, float a)
+{
+    for(int i = 0; i < size; i++)
+    {
+        outputBuffer[i] = (2./M_PI) * atan(inputBuffer[i] * a); // double atan(double x)
+    }
+
+}
+
+
+
