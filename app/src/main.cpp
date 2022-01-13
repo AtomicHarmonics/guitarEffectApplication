@@ -54,6 +54,8 @@ process ( jack_nframes_t nframes, void *arg )
     int i;
     jack_default_audio_sample_t *in, *out;
     audioEffects *data = (audioEffects*)arg;
+    //left channel = 2: clean audio
+    //right channel = 1: send audio to tremoloEffect
     for ( i = 1; i < 3; i++ )
     {
         if(i == 2)
@@ -63,12 +65,12 @@ process ( jack_nframes_t nframes, void *arg )
         }
         else
         {
-        in = (jack_default_audio_sample_t*) jack_port_get_buffer ( input_ports[i], nframes );
-        out = (jack_default_audio_sample_t*) jack_port_get_buffer ( output_ports[i], nframes );
+            in = (jack_default_audio_sample_t*) jack_port_get_buffer ( input_ports[i], nframes );
+            out = (jack_default_audio_sample_t*) jack_port_get_buffer ( output_ports[i], nframes );
         }
         if(i == 2)
         {
-        memcpy ( out, in, nframes * sizeof ( jack_default_audio_sample_t ) );
+            memcpy ( out, in, nframes * sizeof ( jack_default_audio_sample_t ) );
         }
         else
         {

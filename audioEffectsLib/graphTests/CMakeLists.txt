@@ -6,11 +6,11 @@ ${audioEffectsLibGraphTests_SRCS}
 )
 
 include_directories(inc)
-include_directories(/usr/include/python3.9)
+include_directories(/usr/include/python3.8)
 # Specify here the libraries this program depends on
 target_link_libraries(audioEffectsLibGraphTests
 audioEffectsLibSrc
-python3.9
+python3.8
 )
 
 

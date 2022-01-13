@@ -30,7 +30,7 @@ static void BM_tremoloEffect_2(benchmark::State& state) {
     inputBuffer[x] = (float)x/512.0;
   }
   for (auto _ : state)
-    a.tremoloEffect_2(inputBuffer, outputBuffer, 512, float freq, int depth);
+    a.tremoloEffect_2(inputBuffer, outputBuffer, 512, 6, 100);
 }
 BENCHMARK(BM_tremoloEffect_2);
 
@@ -43,7 +43,7 @@ static void BM_distortEffect(benchmark::State& state) {
     inputBuffer[x] = (float)x/512.0;
   }
   for (auto _ : state)
-    a.distortEffect(inputBuffer, outputBuffer, 512, float thresh);
+    a.distortEffect(inputBuffer, outputBuffer, 512, 0.1);
 }
 BENCHMARK(BM_distortEffect);
 
@@ -56,7 +56,7 @@ static void BM_overdriveEffect(benchmark::State& state) {
     inputBuffer[x] = (float)x/512.0;
   }
   for (auto _ : state)
-    a.overdriveEffect(inputBuffer, outputBuffer, 512, float a);
+    a.overdriveEffect(inputBuffer, outputBuffer, 512, 3);
 }
 BENCHMARK(BM_overdriveEffect);
 

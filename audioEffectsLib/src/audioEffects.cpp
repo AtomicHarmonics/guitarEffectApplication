@@ -55,7 +55,8 @@ void audioEffects::tremoloEffect_2(float *inputBuffer, float *outputBuffer, size
     //on matlab, vector lfo is multiplied with input vector
     for(int i = 0; i < size; i++)
     {
-        outputBuffer[i] = inputBuffer[i] * a * sin(2. * PI * freq * (i + 1)) + offset;
+        //outputBuffer[i] = inputBuffer[i] * (a * sin(2. * PI * freq * i) + offset); // 'i' in sin() is 't = (0:length(in)-1)/Fs;' where Fs = #ofSamples
+        outputBuffer[i] = inputBuffer[i] * (a * sin(2. * PI * freq * i * (512/44100)) + offset);
     }
 }
 
