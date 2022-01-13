@@ -37,7 +37,7 @@ void audioEffects::tremoloEffect(float *inputBuffer, float *outputBuffer, size_t
     for(int x = 0; x < size; x++)
     {
         //Multiply input buffer by sin wave, we also multiple 12.0 just for a volume increase, since it's fairly quiet without any extra multiplication
-        outputBuffer[x] = 12.0 * inputBuffer[x] * sine[(tremoloCounter/sineWaveDivisor)%TABLE_SIZE];
+        outputBuffer[x] = 12.0 * inputBuffer[x] * sine[(tremoloCounter/sineWaveDivisor)%TABLE_SIZE]; //1/sineWaveDivisor = (freq * 512)/44100
         tremoloCounter += 1;
         //resetting our tremolo counter arbitrarily after 500000, to avoid overflows (technically we don't need this since tremoloCounter is an unsigned int...)
         if(tremoloCounter > 500000)
@@ -56,7 +56,7 @@ void audioEffects::tremoloEffect_2(float *inputBuffer, float *outputBuffer, size
     for(int i = 0; i < size; i++)
     {
         //outputBuffer[i] = inputBuffer[i] * (a * sin(2. * PI * freq * i) + offset); // 'i' in sin() is 't = (0:length(in)-1)/Fs;' where Fs = #ofSamples
-        outputBuffer[i] = inputBuffer[i] * (a * sin(2. * PI * freq * i * (512/44100)) + offset);
+        outputBuffer[i] = inputBuffer[i] * (a * sin(2. * PI * i * freq * (512/44100)) + offset);
     }
 }
 
