@@ -49,14 +49,19 @@ void audioEffects::tremoloEffect(float *inputBuffer, float *outputBuffer, size_t
 
 void audioEffects::tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float freq, int depth)
 {   // freq: numOscPerSecond
-    float a = depth/200;
-    float offset = 1 - a; // bounds magnitude of output: [0, |input|]
+    float a = depth/200.0;
+    float offset = 1.0 - a; // bounds magnitude of output: [0, |input|]
     
     //on matlab, vector lfo is multiplied with input vector
     for(int i = 0; i < size; i++)
     {
         //outputBuffer[i] = inputBuffer[i] * (a * sin(2. * PI * freq * i) + offset); // 'i' in sin() is 't = (0:length(in)-1)/Fs;' where Fs = #ofSamples
-        outputBuffer[i] = inputBuffer[i] * (a * sin(2. * PI * i * freq * (512/44100)) + offset);
+        outputBuffer[i] = inputBuffer[i] * (a * sin(2.0 * PI * freq * (tremoloCounter/48000.0)) + offset);
+    }
+    tremoloCounter++;
+    if(tremoloCounter > 500000)
+    {
+        tremoloCounter = 0;
     }
 }
 

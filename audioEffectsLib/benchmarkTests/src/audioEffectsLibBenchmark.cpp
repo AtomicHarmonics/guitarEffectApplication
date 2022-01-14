@@ -17,7 +17,7 @@ static void BM_StringCopy(benchmark::State& state) {
     inputBuffer[x] = (float)x/512.0;
   }
   for (auto _ : state)
-    a.tremoloEffect(inputBuffer, outputBuffer, 512, 4, 44100);
+    a.tremoloEffect(inputBuffer, outputBuffer, 512, 4, 48000);
 }
 BENCHMARK(BM_StringCopy);
 
