@@ -74,7 +74,10 @@ process ( jack_nframes_t nframes, void *arg )
         }
         else
         {
-            data->tremoloEffect(in,out,nframes,4.0, 44100);
+            //data->tremoloEffect(in,out,nframes,4.0, 48000);
+            //data->tremoloEffect_2(in,out,nframes,4.0, 100);
+            //data->distortEffect(in,out,nframes, 0.3);
+            data->overdriveEffect(in,out,nframes, 3);
         }
     }
     return 0;

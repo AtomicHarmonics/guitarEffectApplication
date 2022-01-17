@@ -17,7 +17,7 @@ public:
     void tremoloEffect(float *inputBuffer, float *outputBuffer, size_t size, float numOscPerSecond, unsigned int sampleRate);
     float sine[TABLE_SIZE]; //table of sine values
     size_t tremoloCounter; //Counter variable for our tremoloEffect, it is to determine how far in the sine wave we are
-
+    
     //adding new effects
     void tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float freq, int depth);
     void distortEffect(float *inputBuffer, float *outputBuffer, size_t size, float thresh);

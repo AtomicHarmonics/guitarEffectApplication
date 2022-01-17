@@ -57,12 +57,13 @@ void audioEffects::tremoloEffect_2(float *inputBuffer, float *outputBuffer, size
     {
         //outputBuffer[i] = inputBuffer[i] * (a * sin(2. * PI * freq * i) + offset); // 'i' in sin() is 't = (0:length(in)-1)/Fs;' where Fs = #ofSamples
         outputBuffer[i] = inputBuffer[i] * (a * sin(2.0 * PI * freq * (tremoloCounter/48000.0)) + offset);
+        tremoloCounter++;
+	if(tremoloCounter > 500000)
+	{
+	    tremoloCounter = 0;
+	}
     }
-    tremoloCounter++;
-    if(tremoloCounter > 500000)
-    {
-        tremoloCounter = 0;
-    }
+
 }
 
 void audioEffects::distortEffect(float *inputBuffer, float *outputBuffer, size_t size, float thresh)
@@ -81,7 +82,7 @@ void audioEffects::distortEffect(float *inputBuffer, float *outputBuffer, size_t
 void audioEffects::overdriveEffect(float *inputBuffer, float *outputBuffer, size_t size, float a)
 {
     for(int i = 0; i < size; i++)
-    {
+    {					//a maybe should range from 2-3
         outputBuffer[i] = (2./PI) * atan(inputBuffer[i] * a); // double atan(double x)
     }  
 }
