@@ -77,7 +77,11 @@ process ( jack_nframes_t nframes, void *arg )
             //data->tremoloEffect(in,out,nframes,4.0, 48000);
             //data->tremoloEffect_2(in,out,nframes,4.0, 100);
             //data->distortEffect(in,out,nframes, 0.3);
-            data->overdriveEffect(in,out,nframes, 3);
+            //data->overdriveEffect(in,out,nframes, 3);
+            
+            data->process(in,out,nframes);
+
+
         }
     }
     return 0;
@@ -246,10 +250,11 @@ main ( int argc, char *argv[] )
 
     while (1)
     {
+        a.recieveConfig();
 #ifdef WIN32
         Sleep ( 1000 );
 #else
-        sleep ( 1 );
+        usleep ( 500 );
 #endif
     }
 
