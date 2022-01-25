@@ -19,11 +19,15 @@ typedef struct audioEffectsConfig
 {
     float tremoloFreq;
     int tremoloDepth;
-    float overDriveA;
+    float overDriveThresh;
+    float distortThresh;
     int tremoloOrderNumber;
     int overDriveOrderNumber;
+    int distortOrderNumber;
     bool tremoloEnabled;
     bool overDriveEnabled;
+    bool distortEnabled;
+    
 } audioEffectsConfig;
 
 class audioEffects {

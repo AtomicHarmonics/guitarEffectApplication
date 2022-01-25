@@ -40,7 +40,7 @@ void *myThreadFun(void *vargp)
         throw std::invalid_argument("FAILED TO POP QUEUE!");
     }
     
-    printf("Overdrive A value: %lf \n", config2.overDriveA);
+    printf("Overdrive Threshold value: %lf \n", config2.overDriveThresh);
     }
     return NULL;
 }
@@ -80,7 +80,7 @@ main ( int argc, char *argv[] )
     audioEffectsConfig config = {};
     config.overDriveEnabled = j_complete["overDriveEnabled"];
     config.overDriveOrderNumber = j_complete["overDriveOrderNumber"];
-    config.overDriveA = j_complete["overDriveThresh"];
+    config.overDriveThresh = j_complete["overDriveThresh"];
     config.tremoloDepth = j_complete["tremoloDepth"];
     config.tremoloEnabled = j_complete["tremoloEnabled"];
     config.tremoloFreq = j_complete["tremoloFreq"];

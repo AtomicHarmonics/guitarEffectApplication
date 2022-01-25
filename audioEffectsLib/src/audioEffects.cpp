@@ -18,6 +18,8 @@ audioEffects::audioEffects()
     configQueue = new moodycamel::ReaderWriterQueue<audioEffectsConfig> (1);
     config.overDriveEnabled = false;
     config.tremoloEnabled = false;
+    config.distortEnabled = false;
+    
 }
 
 audioEffects::~audioEffects()
@@ -85,7 +87,7 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
     {
         if(config.overDriveOrderNumber == x && config.overDriveEnabled)
         {
-            this->overdriveEffect(currInput,outputBuffer,size,config.overDriveA);
+            this->overdriveEffect(currInput,outputBuffer,size,config.overDriveThresh);
             if(currInput == inputBuffer)
             {
                 currInput = outputBuffer;
@@ -94,6 +96,14 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
         if(config.tremoloOrderNumber == x && config.tremoloEnabled)
         {
             this->tremoloEffect_2(currInput,outputBuffer,size, config.tremoloFreq, config.tremoloDepth);
+            if(currInput == inputBuffer)
+            {
+                currInput = outputBuffer;
+            }
+        }
+        if(config.distortOrderNumber == x && config.distortEnabled)
+        {
+            this->distortEffect(currInput,outputBuffer,size,config.distortThresh);
             if(currInput == inputBuffer)
             {
                 currInput = outputBuffer;
@@ -135,7 +145,12 @@ void audioEffects::recieveConfig(void)
     audioEffectsConfig tempConfig = {};
     tempConfig.overDriveEnabled = j_complete["overDriveEnabled"];
     tempConfig.overDriveOrderNumber = j_complete["overDriveOrderNumber"];
-    tempConfig.overDriveA = j_complete["overDriveThresh"];
+    tempConfig.overDriveThresh = j_complete["overDriveThresh"];
+    tempConfig.distortEnabled = j_complete["distortEnabled"];
+    tempConfig.distortOrderNumber = j_complete["distortOrderNumber"];
+    tempConfig.distortThresh = j_complete["distortThresh"];
+    
+
     tempConfig.tremoloDepth = j_complete["tremoloDepth"];
     tempConfig.tremoloEnabled = j_complete["tremoloEnabled"];
     tempConfig.tremoloFreq = j_complete["tremoloFreq"];

@@ -254,7 +254,7 @@ main ( int argc, char *argv[] )
 #ifdef WIN32
         Sleep ( 1000 );
 #else
-        usleep ( 500 );
+        usleep ( 500000 );
 #endif
     }
 
