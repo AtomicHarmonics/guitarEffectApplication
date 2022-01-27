@@ -1,13 +1,14 @@
-
 #ifndef audioEffects_h
 #define audioEffects_h
-
+#include "reverbLib.h"
+#define VERBLIB_IMPLEMENTATION
+#include <math.h>
 #define TABLE_SIZE   (512)
 #ifndef PI
 #define PI  (3.14159265)
 #endif
 #include  <stddef.h>
-#include <math.h>
+
 class audioEffects {
 public:
     audioEffects();
@@ -22,6 +23,9 @@ public:
     void tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float freq, int depth);
     void distortEffect(float *inputBuffer, float *outputBuffer, size_t size, float thresh);
     void overdriveEffect(float *inputBuffer, float *outputBuffer, size_t size, float a);
+
+    void reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate);
+    verblib verb0;
 
 };
 #endif  
