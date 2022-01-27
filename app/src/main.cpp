@@ -78,14 +78,13 @@ process ( jack_nframes_t nframes, void *arg )
             //data->tremoloEffect_2(in,out,nframes,4.0, 100);
             //data->distortEffect(in,out,nframes, 0.3);
             //data->overdriveEffect(in,out,nframes, 3);
-<<<<<<< HEAD
+
             data->reverbEffect(in, out, nframes, 48000);
-=======
+
             
-            data->process(in,out,nframes);
+            //data->process(in,out,nframes);
 
 
->>>>>>> e3d7ed7cb74e5f8586432589437e9f2a55792921
         }
     }
     return 0;

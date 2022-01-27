@@ -8,8 +8,7 @@
 #define PI  (3.14159265)
 #endif
 #include  <stddef.h>
-<<<<<<< HEAD
-=======
+
 #include <math.h>
 #include <json.hpp>
 #include "readerwriterqueue.h"
@@ -32,7 +31,7 @@ typedef struct audioEffectsConfig
     bool distortEnabled;
     
 } audioEffectsConfig;
->>>>>>> e3d7ed7cb74e5f8586432589437e9f2a55792921
+
 
 class audioEffects {
 public:

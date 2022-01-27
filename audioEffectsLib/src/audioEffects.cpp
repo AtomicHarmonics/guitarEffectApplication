@@ -15,19 +15,18 @@ audioEffects::audioEffects()
 	{
 		sine[i] = 0.2 * (float) sin( ((double)i/(double)TABLE_SIZE) * PI * 2. );
 	}
-<<<<<<< HEAD
 
     int channels = 1;
     int sampleRate = 48000;
     int test = verblib_initialize(&verb0, sampleRate, channels); std::cout << test << "\n";
 
-=======
+
     configQueue = new moodycamel::ReaderWriterQueue<audioEffectsConfig> (1);
     config.overDriveEnabled = false;
     config.tremoloEnabled = false;
     config.distortEnabled = false;
     
->>>>>>> e3d7ed7cb74e5f8586432589437e9f2a55792921
+
 }
 
 audioEffects::~audioEffects()
