@@ -15,11 +15,19 @@ audioEffects::audioEffects()
 	{
 		sine[i] = 0.2 * (float) sin( ((double)i/(double)TABLE_SIZE) * PI * 2. );
 	}
+<<<<<<< HEAD
 
     int channels = 1;
     int sampleRate = 48000;
     int test = verblib_initialize(&verb0, sampleRate, channels); std::cout << test << "\n";
 
+=======
+    configQueue = new moodycamel::ReaderWriterQueue<audioEffectsConfig> (1);
+    config.overDriveEnabled = false;
+    config.tremoloEnabled = false;
+    config.distortEnabled = false;
+    
+>>>>>>> e3d7ed7cb74e5f8586432589437e9f2a55792921
 }
 
 audioEffects::~audioEffects()
@@ -69,6 +77,105 @@ void audioEffects::tremoloEffect_2(float *inputBuffer, float *outputBuffer, size
 	}
     }
 
+}
+
+
+void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
+{
+
+    if(configQueue->size_approx() == 1)
+    {
+        configQueue->try_dequeue(config);
+    }
+
+    float *currInput = inputBuffer;
+
+
+    for(int x = 1; x < 4; x++)
+    {
+        if(config.overDriveOrderNumber == x && config.overDriveEnabled)
+        {
+            this->overdriveEffect(currInput,outputBuffer,size,config.overDriveThresh);
+            if(currInput == inputBuffer)
+            {
+                currInput = outputBuffer;
+            }
+        }
+        if(config.tremoloOrderNumber == x && config.tremoloEnabled)
+        {
+            this->tremoloEffect_2(currInput,outputBuffer,size, config.tremoloFreq, config.tremoloDepth);
+            if(currInput == inputBuffer)
+            {
+                currInput = outputBuffer;
+            }
+        }
+        if(config.distortOrderNumber == x && config.distortEnabled)
+        {
+            this->distortEffect(currInput,outputBuffer,size,config.distortThresh);
+            if(currInput == inputBuffer)
+            {
+                currInput = outputBuffer;
+            }
+        }
+        
+    }
+    if(currInput == inputBuffer)
+    {
+        memcpy(outputBuffer, inputBuffer, size * sizeof(inputBuffer[0]));
+    }
+
+}
+
+void audioEffects::recieveConfig(void)
+{
+    std::cout << "TEST";
+    httplib::Client cli("http://localhost:4996");
+    auto res = cli.Get("/effectsProfile/selectedProfile/");
+    if(res == nullptr)
+    {
+        printf("Null ptr");
+        fflush(stdout);
+        return;
+    }
+    if(res->status != 200)
+    {
+        std::cout << "GET RESPONSE: " << res->status;
+        return;
+    }
+    std::cout << res->status;
+    fflush(stdout);
+
+    json j_complete = json::parse(res->body);
+
+    std::cout << std::setw(4) << j_complete << "\n\n";
+    std::cout << j_complete["author"] << "\n\n";
+
+    audioEffectsConfig tempConfig = {};
+    tempConfig.overDriveEnabled = j_complete["overDriveEnabled"];
+    tempConfig.overDriveOrderNumber = j_complete["overDriveOrderNumber"];
+    tempConfig.overDriveThresh = j_complete["overDriveThresh"];
+    tempConfig.distortEnabled = j_complete["distortEnabled"];
+    tempConfig.distortOrderNumber = j_complete["distortOrderNumber"];
+    tempConfig.distortThresh = j_complete["distortThresh"];
+    
+
+    tempConfig.tremoloDepth = j_complete["tremoloDepth"];
+    tempConfig.tremoloEnabled = j_complete["tremoloEnabled"];
+    tempConfig.tremoloFreq = j_complete["tremoloFreq"];
+    tempConfig.tremoloOrderNumber = j_complete["tremoloOrderNumber"];
+    
+    while(configQueue->size_approx() == 1)
+    {
+
+    }
+
+    if(configQueue->size_approx() != 1)
+    {
+        if(!configQueue->try_enqueue(tempConfig))
+        {
+            throw std::invalid_argument("FAILED TO PUSH FULL FRAME!");
+        }
+    }
 }
 
 void audioEffects::distortEffect(float *inputBuffer, float *outputBuffer, size_t size, float thresh)

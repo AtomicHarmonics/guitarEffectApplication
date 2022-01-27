@@ -8,6 +8,31 @@
 #define PI  (3.14159265)
 #endif
 #include  <stddef.h>
+<<<<<<< HEAD
+=======
+#include <math.h>
+#include <json.hpp>
+#include "readerwriterqueue.h"
+#define CPPHTTPLIB_OPENSSL_SUPPORT
+#include "httplib.h"
+
+using json = nlohmann::json;
+
+typedef struct audioEffectsConfig
+{
+    float tremoloFreq;
+    int tremoloDepth;
+    float overDriveThresh;
+    float distortThresh;
+    int tremoloOrderNumber;
+    int overDriveOrderNumber;
+    int distortOrderNumber;
+    bool tremoloEnabled;
+    bool overDriveEnabled;
+    bool distortEnabled;
+    
+} audioEffectsConfig;
+>>>>>>> e3d7ed7cb74e5f8586432589437e9f2a55792921
 
 class audioEffects {
 public:
@@ -17,12 +42,18 @@ public:
     //Simple tremolo effect that just multiplies the input signal by a sine wave, has numOscPerSecond to control how 'fast' the osciliation effect is
     void tremoloEffect(float *inputBuffer, float *outputBuffer, size_t size, float numOscPerSecond, unsigned int sampleRate);
     float sine[TABLE_SIZE]; //table of sine values
+    float scratchBuffer[2048];
     size_t tremoloCounter; //Counter variable for our tremoloEffect, it is to determine how far in the sine wave we are
-    
+    moodycamel::ReaderWriterQueue<audioEffectsConfig> *configQueue;
+    audioEffectsConfig config;
+
+
     //adding new effects
+    void process(float *inputBuffer, float *outputBuffer, size_t size);
     void tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float freq, int depth);
     void distortEffect(float *inputBuffer, float *outputBuffer, size_t size, float thresh);
     void overdriveEffect(float *inputBuffer, float *outputBuffer, size_t size, float a);
+    void recieveConfig(void);
 
     void reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate);
     verblib verb0;

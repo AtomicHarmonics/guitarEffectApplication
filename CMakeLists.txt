@@ -5,4 +5,5 @@ project(myProject)
 enable_testing()
 
 add_subdirectory(app)
+add_subdirectory(sandBox)
 add_subdirectory(audioEffectsLib)
