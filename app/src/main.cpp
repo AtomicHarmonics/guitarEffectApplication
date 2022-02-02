@@ -207,35 +207,35 @@ main ( int argc, char *argv[] )
      * it.
      */
 
-    ports = jack_get_ports ( client, NULL, NULL, JackPortIsOutput );
-    if ( ports == NULL )
-    {
-        fprintf ( stderr, "no physical capture ports\n" );
-        exit ( 1 );
-    }
+    // ports = jack_get_ports ( client, NULL, NULL, JackPortIsOutput );
+    // if ( ports == NULL )
+    // {
+    //     fprintf ( stderr, "no physical capture ports\n" );
+    //     exit ( 1 );
+    // }
 
-    for ( i = 0; i < 2; i++ )
-	{
-	    int res = jack_connect ( client, ports[i], jack_port_name ( input_ports[0] ) );
-		if (res)
-		{
-            fprintf ( stderr, "cannot connect input ports1: %d %d \n",i, res );
-		}
-    }
-    free ( ports );
+    // for ( i = 0; i < 2; i++ )
+	// {
+	//     int res = jack_connect ( client, ports[i], jack_port_name ( input_ports[0] ) );
+	// 	if (res)
+	// 	{
+    //         fprintf ( stderr, "cannot connect input ports1: %d %d \n",i, res );
+	// 	}
+    // }
+    // free ( ports );
 
-    ports = jack_get_ports ( client, NULL, NULL, JackPortIsPhysical|JackPortIsInput );
-    if ( ports == NULL )
-    {
-        fprintf ( stderr, "no physical playback ports\n" );
-        exit ( 1 );
-    }
+    // ports = jack_get_ports ( client, NULL, NULL, JackPortIsPhysical|JackPortIsInput );
+    // if ( ports == NULL )
+    // {
+    //     fprintf ( stderr, "no physical playback ports\n" );
+    //     exit ( 1 );
+    // }
 
-    for ( i = 0; i < 2; i++ )
-        if ( jack_connect ( client, jack_port_name ( output_ports[i] ), ports[i] ) )
-            fprintf ( stderr, "cannot connect input ports2\n" );
+    // for ( i = 0; i < 2; i++ )
+    //     if ( jack_connect ( client, jack_port_name ( output_ports[i] ), ports[i] ) )
+    //         fprintf ( stderr, "cannot connect input ports2\n" );
 
-    free ( ports );
+    // free ( ports );
 
     /* install a signal handler to properly quits jack client */
 #ifdef WIN32
