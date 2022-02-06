@@ -1,0 +1,8 @@
+#!/bin/bash
+trap "exit" INT
+while true
+do
+jack_wait -w
+gst-launch-1.0 jackaudiosrc name="GstreamerJack" connect=0 ! audio/x-raw, channels=2 ! audioconvert ! audioresample ! opusenc ! rtpopuspay pt=111 ! udpsink host=3.131.155.87 port=5002 > /dev/null
+sleep 1
+done

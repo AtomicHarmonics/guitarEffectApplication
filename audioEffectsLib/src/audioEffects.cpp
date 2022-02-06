@@ -128,8 +128,8 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
 void audioEffects::recieveConfig(void)
 {
     std::cout << "TEST";
-    httplib::Client cli("http://localhost:4996");
-    auto res = cli.Get("/effectsProfile/selectedProfile/");
+    httplib::Client cli("https://atomicharmonics.com");
+    auto res = cli.Get("/flaskApp/effectsProfile/selectedProfile/");
     if(res == nullptr)
     {
         printf("Null ptr");

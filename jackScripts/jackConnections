@@ -1,0 +1,9 @@
+#!/bin/bash
+trap "exit" INT
+while true
+do
+sleep 1
+jack_wait -w
+aj-snapshot -rj config2 > /dev/null
+sleep 4
+done

@@ -79,10 +79,10 @@ process ( jack_nframes_t nframes, void *arg )
             //data->distortEffect(in,out,nframes, 0.3);
             //data->overdriveEffect(in,out,nframes, 3);
 
-            data->reverbEffect(in, out, nframes, 48000);
+            //data->reverbEffect(in, out, nframes, 48000);
 
             
-            //data->process(in,out,nframes);
+            data->process(in,out,nframes);
 
 
         }
