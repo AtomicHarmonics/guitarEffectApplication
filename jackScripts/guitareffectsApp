@@ -1,9 +1,0 @@
-#!/bin/bash
-trap "exit" INT
-while true
-do
-jack_wait -w
-cd /home/pi/Desktop/audioProgramming/effectsApp/guitarEffectApplication/build
-bin/effectsApp > /dev/null
-sleep 1
-done

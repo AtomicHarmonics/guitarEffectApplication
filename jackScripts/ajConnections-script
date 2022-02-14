@@ -1,0 +1,3 @@
+#!/bin/bash
+jack_wait -w
+aj-snapshot -d /home/mohammed/Desktop/projects/jackTesting/guitarEffectApplication/jackScripts/fullConnConfig

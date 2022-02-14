@@ -1,9 +1,0 @@
-#!/bin/bash
-trap "exit" INT
-while true
-do
-jack_wait -w
-cd /home/mohammed/Desktop/projects/jackTesting/wavPlayerApplication/resources
-../build/app/wavPlayer
-sleep 1
-done

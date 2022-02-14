@@ -1,0 +1,13 @@
+[Unit]
+Description=Gstreamer audio service
+After=sound.target local-fs.target jackServer.service
+Requires=jackServer.service
+PartOf=jackServer.service
+
+[Service]
+Type=simple
+TimeoutStopSec=3
+ExecStart=/bin/bash /home/mohammed/Desktop/projects/jackTesting/guitarEffectApplication/jackScripts/gstreamer-script
+
+[Install]
+WantedBy=jackServer.service

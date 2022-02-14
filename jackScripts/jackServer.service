@@ -1,0 +1,14 @@
+[Unit]
+Description=Jack audio server service
+After=sound.target local-fs.target
+
+[Service]
+Type=simple
+TimeoutStopSec=6
+ExecStart=/bin/bash /home/mohammed/Desktop/projects/jackTesting/guitarEffectApplication/jackScripts/jackServer-script
+LimitRTPRIO=95
+LimitRTTIME=infinity
+LimitMEMLOCK=infinity
+
+[Install]
+WantedBy=default.target
