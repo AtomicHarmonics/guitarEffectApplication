@@ -1,4 +1,4 @@
-ajConnections: This is a program that will automatically make jack connections for you based on the config file
+ajConnections-script: This is a program that will automatically make jack connections for you based on the config file
 given, in this case 'fullConnConfig'
 gstreamer-script: This program will recieve an audio stream from jack and stream it to a set ip address
 effects-script: will start the guitar effects application
@@ -14,3 +14,11 @@ To stop the applications, simply enter 'systemctl --user stop jackServer.service
 close other services.
 
 You can also just run each service manually by entering 'systemctl --user start <SERVICENAME>', I would reccomend you first run the disableServices script since otherwise other services would start automatically.
+
+You can view the status of each service by 'systemctl --user status <SERVICENAME>' and exit the status menu via 'q'.
+
+List of services:
+ajSnapshotService.service
+effectsService.service
+gstreamerService.service
+jackServer.service
