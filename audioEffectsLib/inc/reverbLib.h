@@ -463,7 +463,7 @@ void verblib_process ( verblib* verb, const float* input_buffer, float* output_b
 {
     int i;
     float outL, outR, input;
-
+    //std::cout << "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\n";fflush(stdout);//std::flush(std::cout);
     if ( verb->channels == 1 )
     {
         while ( frames-- > 0 )
@@ -527,6 +527,7 @@ void verblib_set_room_size ( verblib* verb, float value )
 {
     verb->roomsize = ( value * verblib_scaleroom ) + verblib_offsetroom;
     verblib_update ( verb );
+    //std::cout << "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n";fflush(stdout);
 }
 
 float verblib_get_room_size ( const verblib* verb )

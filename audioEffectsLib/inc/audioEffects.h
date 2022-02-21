@@ -30,6 +30,16 @@ typedef struct audioEffectsConfig
     bool overDriveEnabled;
     bool distortEnabled;
     
+    
+    float reverbWetLevel;
+    float reverbRoomSize;
+    float reverbDryLevel;
+    float reverbDampLevel;
+    float reverbWidth;
+    float reverbMode;
+    int reverbOrderNumber;
+    bool reverbEnabled;
+    
 } audioEffectsConfig;
 
 
@@ -54,7 +64,7 @@ public:
     void overdriveEffect(float *inputBuffer, float *outputBuffer, size_t size, float a);
     void recieveConfig(void);
 
-    void reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate);
+    void reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate, float reverbWetLevel, float reverbRoomSize, float reverbDryLevel, float reverbDampLevel, float reverbWidth, float reverbMode);
     verblib verb0;
 
 };
