@@ -19,7 +19,7 @@ audioEffects::audioEffects()
     int channels = 1;
     int sampleRate = 44100;
     int test = verblib_initialize(&verb0, sampleRate, channels); 
-    std::cout << test << " verb init \n" << std::flush;//error check
+    //std::cout << test << " verb init \n" << std::flush;//error check
 
 
 

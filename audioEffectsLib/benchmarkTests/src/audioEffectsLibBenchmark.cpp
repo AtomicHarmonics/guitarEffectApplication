@@ -8,7 +8,7 @@ static void BM_StringCreation(benchmark::State& state) {
 BENCHMARK(BM_StringCreation);
 
 // Define another benchmark
-static void BM_StringCopy(benchmark::State& state) {
+static void BM_tremoloEffect(benchmark::State& state) {
   audioEffects a;
   float inputBuffer[512] = {};
   float outputBuffer[512] = {};
@@ -19,7 +19,7 @@ static void BM_StringCopy(benchmark::State& state) {
   for (auto _ : state)
     a.tremoloEffect(inputBuffer, outputBuffer, 512, 4, 48000);
 }
-BENCHMARK(BM_StringCopy);
+BENCHMARK(BM_tremoloEffect);
 
 static void BM_tremoloEffect_2(benchmark::State& state) {
   audioEffects a;
@@ -59,5 +59,20 @@ static void BM_overdriveEffect(benchmark::State& state) {
     a.overdriveEffect(inputBuffer, outputBuffer, 512, 3);
 }
 BENCHMARK(BM_overdriveEffect);
+
+static void BM_reverbEffect(benchmark::State& state) {
+  audioEffects a;
+  float inputBuffer[512] = {};
+  float outputBuffer[512] = {};
+  for(int x = 0; x < 512; x++)
+  {
+    inputBuffer[x] = (float)x/512.0;
+  }
+  for (auto _ : state)
+    a.reverbEffect(inputBuffer, outputBuffer, 512, 44100, (1.0f/3.0f), 0.5f, 0.0f, 0.25f, 1.0f, 0.0f);
+//    a.overdriveEffect(inputBuffer, outputBuffer, 512, 3);
+}
+BENCHMARK(BM_reverbEffect);
+
 
 BENCHMARK_MAIN();
