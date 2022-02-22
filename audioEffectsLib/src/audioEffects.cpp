@@ -18,7 +18,9 @@ audioEffects::audioEffects()
 
     int channels = 1;
     int sampleRate = 44100;
-    int test = verblib_initialize(&verb0, sampleRate, channels); std::cout << test << "\n";//error check
+    int test = verblib_initialize(&verb0, sampleRate, channels); 
+    std::cout << test << " verb init \n" << std::flush;//error check
+
 
 
     configQueue = new moodycamel::ReaderWriterQueue<audioEffectsConfig> (1);
@@ -59,7 +61,7 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
         }
         if(config.tremoloOrderNumber == x && config.tremoloEnabled)
         {
-            this->tremoloEffect(currInput,outputBuffer,size, config.tremoloFreq, config.tremoloDepth);
+            this->tremoloEffect_2(currInput,outputBuffer,size, config.tremoloFreq, config.tremoloDepth);
             if(currInput == inputBuffer)
             {
                 currInput = outputBuffer;
@@ -67,7 +69,6 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
         }
         if(config.distortOrderNumber == x && config.distortEnabled)
         {
-        //std::cout << "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\n";fflush(stdout);//std::flush(std::cout);
             this->distortEffect(currInput,outputBuffer,size,config.distortThresh);
             if(currInput == inputBuffer)
             {
@@ -76,7 +77,6 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
         }
         if(config.reverbOrderNumber == x && config.reverbEnabled)
         {
-        //std::cout << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n";fflush(stdout); //std::flush(std::cout);
             this->reverbEffect(currInput,outputBuffer,size, 44100, config.reverbWetLevel, config.reverbRoomSize, config.reverbDryLevel, config.reverbDampLevel, config.reverbWidth, config.reverbMode);
             if(currInput == inputBuffer)
             {          
@@ -172,7 +172,7 @@ void audioEffects::tremoloEffect(float *inputBuffer, float *outputBuffer, size_t
         outputBuffer[x] = 12.0 * inputBuffer[x] * sine[(tremoloCounter/sineWaveDivisor)%TABLE_SIZE]; //1/sineWaveDivisor = (freq * 512)/44100
         tremoloCounter += 1;
         //resetting our tremolo counter arbitrarily after 500000, to avoid overflows (technically we don't need this since tremoloCounter is an unsigned int...)
-        if(tremoloCounter > 500000)
+        if(tremoloCounter > 800000000)
         {
             tremoloCounter = 0;
         }
@@ -209,7 +209,7 @@ void audioEffects::reverbEffect(const float* inputBuffer, float* outputBuffer, u
     verblib_set_damping ( &verb0, reverbDampLevel );
     verblib_set_width ( &verb0, reverbWidth );
     verblib_set_mode ( &verb0, reverbMode );
-    verblib_mute ( &verb0 );
+    //verblib_mute ( &verb0 );
 
     verblib_process(&verb0, inputBuffer, outputBuffer, frames);
     
@@ -228,7 +228,7 @@ void audioEffects::tremoloEffect_2(float *inputBuffer, float *outputBuffer, size
         //outputBuffer[i] = inputBuffer[i] * (a * sin(2. * PI * freq * i) + offset); // 'i' in sin() is 't = (0:length(in)-1)/Fs;' where Fs = #ofSamples
         outputBuffer[i] = inputBuffer[i] * (a * sin(2.0 * PI * freq * (tremoloCounter/48000.0)) + offset);
         tremoloCounter++;
-	if(tremoloCounter > 500000)
+	if(tremoloCounter > 800000000)
 	{
 	    tremoloCounter = 0;
 	}

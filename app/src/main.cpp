@@ -78,10 +78,11 @@ process ( jack_nframes_t nframes, void *arg )
             //data->tremoloEffect_2(in,out,nframes,4.0, 100);
             //data->distortEffect(in,out,nframes, 0.3);
             //data->overdriveEffect(in,out,nframes, 3);
-
-            //data->reverbEffect(in, out, nframes, 48000);
-
+//void audioEffects::reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate, float reverbWetLevel, float reverbRoomSize, float reverbDryLevel, float reverbDampLevel, float reverbWidth, float reverbMode)
             
+            //data->reverbEffect(in, out, nframes, 44100, (1.0f/3.0f), 0.5f, 0.0f, 0.25f, 1.0f, 0.0f);
+
+            //data->reverbEffect_2(in, out, nframes, 44100);
             data->process(in,out,nframes);
 
 
