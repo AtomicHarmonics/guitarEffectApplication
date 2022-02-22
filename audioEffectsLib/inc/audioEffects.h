@@ -40,6 +40,9 @@ typedef struct audioEffectsConfig
     int reverbOrderNumber;
     bool reverbEnabled;
     
+    float preAmpGain;
+    bool preAmpEnabled;
+
 } audioEffectsConfig;
 
 
@@ -66,6 +69,8 @@ public:
 
     void reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate, float reverbWetLevel, float reverbRoomSize, float reverbDryLevel, float reverbDampLevel, float reverbWidth, float reverbMode);
     verblib verb0;
+
+    void preAmp(float *inputBuffer, float *outputBuffer, size_t size, float gain); 
 
 };
 #endif  

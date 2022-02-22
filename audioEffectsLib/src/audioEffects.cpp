@@ -48,6 +48,14 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
 
     float *currInput = inputBuffer;
 
+    if(config.preAmpEnabled)
+    {
+        this->preAmp(currInput, outputBuffer, size, config.preAmpGain);
+        if(currInput == inputBuffer)
+        {
+            currInput = outputBuffer;
+        }
+    }
 
     for(int x = 1; x < 5; x++)
     {
@@ -90,6 +98,14 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
         memcpy(outputBuffer, inputBuffer, size * sizeof(inputBuffer[0]));
     }
 
+}
+
+void audioEffects::preAmp(float *inputBuffer, float *outputBuffer, size_t size, float gain)
+{
+    for(int i = 0; i < size; i++)
+    {
+        outputBuffer[i] = gain * inputBuffer[i];
+    }  
 }
 
 void audioEffects::recieveConfig(void)
@@ -141,6 +157,10 @@ void audioEffects::recieveConfig(void)
     tempConfig.reverbEnabled = j_complete["reverbEnabled"];    
     tempConfig.reverbOrderNumber = j_complete["reverbOrderNumber"];    
     
+    tempConfig.preAmpGain = j_complete["preAmpGain"];    
+    tempConfig.preAmpEnabled = j_complete["preAmpEnabled"];    
+    
+
     while(configQueue->size_approx() == 1)
     {
 
