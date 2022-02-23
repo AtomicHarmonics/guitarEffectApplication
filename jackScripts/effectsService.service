@@ -7,7 +7,7 @@ PartOf=jackServer.service
 [Service]
 Type=simple
 TimeoutStopSec=3
-ExecStart=/bin/bash /home/mohammed/Desktop/projects/jackTesting/guitarEffectApplication/jackScripts/effects-script
+ExecStart=/bin/bash /var/lib/jackAssets/effects-script
 
 [Install]
 WantedBy=jackServer.service

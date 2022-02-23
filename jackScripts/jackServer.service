@@ -5,7 +5,7 @@ After=sound.target local-fs.target
 [Service]
 Type=simple
 TimeoutStopSec=6
-ExecStart=/bin/bash /home/mohammed/Desktop/projects/jackTesting/guitarEffectApplication/jackScripts/jackServer-script
+ExecStart=/bin/bash /var/lib/jackAssets/jackServer-script
 LimitRTPRIO=95
 LimitRTTIME=infinity
 LimitMEMLOCK=infinity
