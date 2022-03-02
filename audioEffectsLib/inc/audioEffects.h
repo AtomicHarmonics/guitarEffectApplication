@@ -19,30 +19,35 @@ using json = nlohmann::json;
 
 typedef struct audioEffectsConfig
 {
+    bool tremoloEnabled;
+    int tremoloOrderNumber;
     float tremoloFreq;
     int tremoloDepth;
-    float overDriveThresh;
-    float distortThresh;
-    int tremoloOrderNumber;
-    int overDriveOrderNumber;
+    
+    bool distortEnabled; 
     int distortOrderNumber;
-    bool tremoloEnabled;
+    float distortThresh;
+    
     bool overDriveEnabled;
-    bool distortEnabled;
+    int overDriveOrderNumber;
+    float overDriveThresh;
     
-    
+    bool reverbEnabled;
+    int reverbOrderNumber;
     float reverbWetLevel;
     float reverbRoomSize;
     float reverbDryLevel;
     float reverbDampLevel;
     float reverbWidth;
     float reverbMode;
-    int reverbOrderNumber;
-    bool reverbEnabled;
     
-    float preAmpGain;
+    bool bitcrusherEnabled;
+    int bitcrusherOrderNumber;
+    int bitcrusherDownSample;
+    
     bool preAmpEnabled;
-
+    float preAmpGain;
+    
 } audioEffectsConfig;
 
 
@@ -59,16 +64,17 @@ public:
     moodycamel::ReaderWriterQueue<audioEffectsConfig> *configQueue;
     audioEffectsConfig config;
 
-
-    //adding new effects
     void process(float *inputBuffer, float *outputBuffer, size_t size);
+    void recieveConfig(void);
+    //adding new effects
     void tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float freq, int depth);
     void distortEffect(float *inputBuffer, float *outputBuffer, size_t size, float thresh);
     void overdriveEffect(float *inputBuffer, float *outputBuffer, size_t size, float a);
-    void recieveConfig(void);
-
-    void reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate, float reverbWetLevel, float reverbRoomSize, float reverbDryLevel, float reverbDampLevel, float reverbWidth, float reverbMode);
+   
+    void reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate, float WetLevel, float RoomSize, float DryLevel, float DampLevel, float Width, float Mode);
     verblib verb0;
+
+    void bitcrusherEffect(float *inputBuffer, float *outputBuffer, size_t size, float DownSample);
 
     void preAmp(float *inputBuffer, float *outputBuffer, size_t size, float gain); 
 

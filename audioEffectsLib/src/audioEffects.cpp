@@ -15,13 +15,10 @@ audioEffects::audioEffects()
     {
         sine[i] = 0.2 * (float) sin( ((double)i/(double)TABLE_SIZE) * PI * 2. );
     }
-
+    //setting reverb values
     int channels = 1;
-    int sampleRate = 44100;
+    int sampleRate = 48000;
     int test = verblib_initialize(&verb0, sampleRate, channels); 
-    //std::cout << test << " verb init \n" << std::flush;//error check
-
-
 
     configQueue = new moodycamel::ReaderWriterQueue<audioEffectsConfig> (1);
     config.overDriveEnabled = false;
@@ -57,7 +54,7 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
         }
     }
 
-    for(int x = 1; x < 5; x++)
+    for(int x = 1; x < 6; x++)
     {
         if(config.overDriveOrderNumber == x && config.overDriveEnabled)
         {
@@ -85,27 +82,27 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
         }
         if(config.reverbOrderNumber == x && config.reverbEnabled)
         {
-            this->reverbEffect(currInput,outputBuffer,size, 44100, config.reverbWetLevel, config.reverbRoomSize, config.reverbDryLevel, config.reverbDampLevel, config.reverbWidth, config.reverbMode);
+            this->reverbEffect(currInput,outputBuffer,size, 48000, config.reverbWetLevel, config.reverbRoomSize, config.reverbDryLevel, config.reverbDampLevel, config.reverbWidth, config.reverbMode);
             if(currInput == inputBuffer)
             {          
                 currInput = outputBuffer;
             }
-        }        
-        
+        }    
+        if(config.bitcrusherOrderNumber == x && config.bitcrusherEnabled)
+        {
+            this->bitcrusherEffect(currInput, outputBuffer, size, config.bitcrusherDownSample);
+            if(currInput == inputBuffer)
+            {          
+                currInput = outputBuffer;
+            }
+        }
+                    
     }
     if(currInput == inputBuffer)
     {
         memcpy(outputBuffer, inputBuffer, size * sizeof(inputBuffer[0]));
     }
 
-}
-
-void audioEffects::preAmp(float *inputBuffer, float *outputBuffer, size_t size, float gain)
-{
-    for(int i = 0; i < size; i++)
-    {
-        outputBuffer[i] = gain * inputBuffer[i];
-    }  
 }
 
 void audioEffects::recieveConfig(void)
@@ -160,6 +157,9 @@ void audioEffects::recieveConfig(void)
     tempConfig.preAmpGain = j_complete["preAmpGain"];    
     tempConfig.preAmpEnabled = j_complete["preAmpEnabled"];    
     
+    tempConfig.bitcrusherEnabled = j_complete["bitcrusherEnabled"];
+    tempConfig.bitcrusherOrderNumber = j_complete["bitcrusherOrderNumber"]; 
+    tempConfig.bitcrusherDownSample = j_complete["bitcrusherDownSample"];     
 
     while(configQueue->size_approx() == 1)
     {
@@ -174,6 +174,15 @@ void audioEffects::recieveConfig(void)
         }
     }
 }
+
+void audioEffects::preAmp(float *inputBuffer, float *outputBuffer, size_t size, float gain)
+{
+    for(int i = 0; i < size; i++)
+    {
+        outputBuffer[i] = gain * inputBuffer[i];
+    }  
+}
+
 void audioEffects::tremoloEffect(float *inputBuffer, float *outputBuffer, size_t size, float numOscPerSecond, unsigned int sampleRate)
 {
     //TODO: VERIFY THAT NO DIVIDE BY ZERO ERRORS OCCUR!!!
@@ -220,7 +229,7 @@ void audioEffects::overdriveEffect(float *inputBuffer, float *outputBuffer, size
     }  
 }
 
-void audioEffects::reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate, float reverbWetLevel, float reverbRoomSize, float reverbDryLevel, float reverbDampLevel, float reverbWidth, float reverbMode)
+void audioEffects::reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate, float WetLevel, float RoomSize, float DryLevel, float DampLevel, float Width, float Mode)
 {
     //2.17: add verblib_init's set functions
     verblib_set_wet ( &verb0, reverbWetLevel );
@@ -229,13 +238,29 @@ void audioEffects::reverbEffect(const float* inputBuffer, float* outputBuffer, u
     verblib_set_damping ( &verb0, reverbDampLevel );
     verblib_set_width ( &verb0, reverbWidth );
     verblib_set_mode ( &verb0, reverbMode );
-    //verblib_mute ( &verb0 );
+    //verblib_mute ( &verb0 );rser
 
     verblib_process(&verb0, inputBuffer, outputBuffer, frames);
     
 }
 
-
+void audioEffects::bitcrusherEffect(float *inputBuffer, float *outputBuffer, size_t size, float DownSample)
+{
+    // Downsampling
+    holdVal = inputBuffer[0];
+    downSample = 8; //range 1-10 sounds ok, 1 is clean audio
+    bitCounter = downSample;
+    for (int n = 0; n < size; n++)
+    {
+        if (bitCounter <= 0)
+        {
+            holdVal = inputBuffer[n];
+            bitCounter = downSample;
+        }
+        outputBuffer[n] = holdVal;
+        bitCounter = bitCounter - 1;
+    }
+}
 
 void audioEffects::tremoloEffect_2(float *inputBuffer, float *outputBuffer, size_t size, float freq, int depth)
 {   // freq: numOscPerSecond
