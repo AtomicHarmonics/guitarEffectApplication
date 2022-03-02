@@ -28,7 +28,7 @@ audioEffects::audioEffects()
     config.tremoloEnabled = false;
     config.distortEnabled = false;
     config.reverbEnabled = false;
-    
+    config.bypassEnabled = false;
 
 }
 
@@ -47,7 +47,11 @@ void audioEffects::process(float *inputBuffer, float *outputBuffer, size_t size)
     }
 
     float *currInput = inputBuffer;
-
+    if(config.bypassEnabled)
+    {
+        memcpy(outputBuffer, inputBuffer, size * sizeof(inputBuffer[0]));
+        return;
+    }
     if(config.preAmpEnabled)
     {
         this->preAmp(currInput, outputBuffer, size, config.preAmpGain);
@@ -160,6 +164,29 @@ void audioEffects::recieveConfig(void)
     tempConfig.preAmpGain = j_complete["preAmpGain"];    
     tempConfig.preAmpEnabled = j_complete["preAmpEnabled"];    
     
+
+    res = cli.Get("/byPass/");
+    if(res == nullptr)
+    {
+        printf("Null ptr");
+        fflush(stdout);
+        return;
+    }
+    if(res->status != 200)
+    {
+        std::cout << "GET RESPONSE: " << res->status;
+        return;
+    }
+    std::cout << res->status;
+    fflush(stdout);
+
+    j_complete = json::parse(res->body);
+
+    std::cout << std::setw(4) << j_complete << "\n\n";
+    std::cout << j_complete["author"] << "\n\n";
+
+    
+    tempConfig.bypassEnabled = j_complete["bypassEnabled"];
 
     while(configQueue->size_approx() == 1)
     {

@@ -43,6 +43,8 @@ typedef struct audioEffectsConfig
     float preAmpGain;
     bool preAmpEnabled;
 
+    bool bypassEnabled;
+
 } audioEffectsConfig;
 
 
