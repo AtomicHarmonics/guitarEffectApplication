@@ -76,7 +76,7 @@ public:
     void reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate, float WetLevel, float RoomSize, float DryLevel, float DampLevel, float Width, float Mode);
     verblib verb0;
 
-    void bitcrusherEffect(float *inputBuffer, float *outputBuffer, size_t size, float DownSample);
+    void bitcrusherEffect(float *inputBuffer, float *outputBuffer, size_t size, int DownSample);
 
     void preAmp(float *inputBuffer, float *outputBuffer, size_t size, float gain); 
 

@@ -259,30 +259,30 @@ void audioEffects::overdriveEffect(float *inputBuffer, float *outputBuffer, size
 void audioEffects::reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate, float WetLevel, float RoomSize, float DryLevel, float DampLevel, float Width, float Mode)
 {
     //2.17: add verblib_init's set functions
-    verblib_set_wet ( &verb0, reverbWetLevel );
-    verblib_set_room_size ( &verb0, reverbRoomSize );
-    verblib_set_dry ( &verb0, reverbDryLevel );
-    verblib_set_damping ( &verb0, reverbDampLevel );
-    verblib_set_width ( &verb0, reverbWidth );
-    verblib_set_mode ( &verb0, reverbMode );
+    verblib_set_wet ( &verb0, WetLevel );
+    verblib_set_room_size ( &verb0, RoomSize );
+    verblib_set_dry ( &verb0, DryLevel );
+    verblib_set_damping ( &verb0, DampLevel );
+    verblib_set_width ( &verb0, Width );
+    verblib_set_mode ( &verb0, Mode );
     //verblib_mute ( &verb0 );rser
 
     verblib_process(&verb0, inputBuffer, outputBuffer, frames);
     
 }
 
-void audioEffects::bitcrusherEffect(float *inputBuffer, float *outputBuffer, size_t size, float DownSample)
+void audioEffects::bitcrusherEffect(float *inputBuffer, float *outputBuffer, size_t size, int DownSample)
 {
     // Downsampling
-    holdVal = inputBuffer[0];
-    downSample = 8; //range 1-10 sounds ok, 1 is clean audio
-    bitCounter = downSample;
+    //DownSample: range 1-10 sounds ok, 1 is clean audio
+    float holdVal = inputBuffer[0];
+    int bitCounter = DownSample;
     for (int n = 0; n < size; n++)
     {
         if (bitCounter <= 0)
         {
             holdVal = inputBuffer[n];
-            bitCounter = downSample;
+            bitCounter = DownSample;
         }
         outputBuffer[n] = holdVal;
         bitCounter = bitCounter - 1;
