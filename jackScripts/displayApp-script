@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /var/lib/jackAssets/
+python clock.py --display ili9341 --interface spi --width 320 --height 240 --framebuffer full_frame --rotate 2

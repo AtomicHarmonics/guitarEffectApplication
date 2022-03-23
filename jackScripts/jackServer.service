@@ -9,6 +9,8 @@ ExecStart=/bin/bash /var/lib/jackAssets/jackServer-script
 LimitRTPRIO=95
 LimitRTTIME=infinity
 LimitMEMLOCK=infinity
+Restart=always
+RestartSec=3
 
 [Install]
 WantedBy=default.target

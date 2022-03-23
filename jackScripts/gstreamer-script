@@ -1,4 +1,4 @@
 #!/bin/bash
 trap "exit" INT
 jack_wait -w
-gst-launch-1.0 jackaudiosrc name="GstreamerJack" connect=0 ! audio/x-raw, channels=1 ! audioconvert ! audioresample ! opusenc ! rtspclientsink location=rtsp://myuser:mypass@127.0.0.1:8554/mystream
+gst-launch-1.0 jackaudiosrc name="GstreamerJack" connect=0 ! audio/x-raw, channels=1 ! audioconvert ! audioresample ! opusenc ! rtspclientsink location=rtsp://myuser:mypass@192.168.86.31:8554/mystream

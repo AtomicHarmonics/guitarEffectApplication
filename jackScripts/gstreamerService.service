@@ -8,6 +8,8 @@ PartOf=jackServer.service
 Type=simple
 TimeoutStopSec=3
 ExecStart=/bin/bash /var/lib/jackAssets/gstreamer-script
+Restart=always
+RestartSec=3
 
 [Install]
 WantedBy=jackServer.service
