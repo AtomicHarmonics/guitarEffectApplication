@@ -140,7 +140,7 @@ def main():
     
     
     while True:
-        x = requests.get('http://localhost:4996/effectsProfile/selectedProfile/')
+        x = requests.get('http://192.168.86.31:4996/effectsProfile/selectedProfile/')
         print(x.status_code)
         if(x.status_code == 200):
             updateDisplay(device, x.json())

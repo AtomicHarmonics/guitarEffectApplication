@@ -6,6 +6,13 @@ sudo apt install cmake
 sudo apt install aj-snapshot
 sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
 
+To use the lcd application, you have to install the luma library, to do so, clone https://github.com/rm-hull/luma.examples and follow the installation instructions.
+
+For the internet connectivity to work, you must modify the ip addresses that are hardcoded to be whatever the server's ip is. The files are:
+jackScripts/effectsDisplay.py line: 143
+jackScripts/gstreamer-script line: 4
+audioEffectsLib/src/audioEffects.cpp line:117
+
 
 Figure out what version of python is installed on your PC by running 'python' or 'python3' in a terminal. For example mine is '3.9.7'. Use that number to determine which packages to install:
 sudo apt-get install python3-matplotlib python3-numpy python3.9-dev
