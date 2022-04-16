@@ -1,3 +1,3 @@
 #!/bin/bash
 cd /var/lib/jackAssets/
-python effectsDisplay.py --display ili9341 --interface spi --width 320 --height 240 --framebuffer full_frame --rotate 2
+python effectsDisplay.py --display ili9341 --interface spi --width 320 --height 240 --framebuffer full_frame

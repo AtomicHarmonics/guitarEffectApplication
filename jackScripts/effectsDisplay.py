@@ -162,7 +162,7 @@ def main():
                 print(x.status_code)
                 if(x.status_code == 200 and z.status_code == 200):
                     updateDisplay(device, x.json(),z.json(),internetVar)
-                time.sleep(2)
+                time.sleep(1)
        
 #python3 effectsDisplay.py --display pygame --width 320 --height 240
 
