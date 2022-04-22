@@ -54,6 +54,8 @@ process ( jack_nframes_t nframes, void *arg )
     int i;
     jack_default_audio_sample_t *in, *out;
     audioEffects *data = (audioEffects*)arg;
+    //left channel = 2: clean audio
+    //right channel = 1: send audio to tremoloEffect
     for ( i = 1; i < 3; i++ )
     {
         if(i == 2)
@@ -63,16 +65,27 @@ process ( jack_nframes_t nframes, void *arg )
         }
         else
         {
-        in = (jack_default_audio_sample_t*) jack_port_get_buffer ( input_ports[i], nframes );
-        out = (jack_default_audio_sample_t*) jack_port_get_buffer ( output_ports[i], nframes );
+            in = (jack_default_audio_sample_t*) jack_port_get_buffer ( input_ports[i], nframes );
+            out = (jack_default_audio_sample_t*) jack_port_get_buffer ( output_ports[i], nframes );
         }
         if(i == 2)
         {
-        memcpy ( out, in, nframes * sizeof ( jack_default_audio_sample_t ) );
+            memcpy ( out, in, nframes * sizeof ( jack_default_audio_sample_t ) );
         }
         else
         {
-            data->tremoloEffect(in,out,nframes,4.0, 44100);
+            //data->tremoloEffect(in,out,nframes,4.0, 48000);
+            //data->tremoloEffect_2(in,out,nframes,4.0, 100);
+            //data->distortEffect(in,out,nframes, 0.3);
+            //data->overdriveEffect(in,out,nframes, 3);
+//void audioEffects::reverbEffect(const float* inputBuffer, float* outputBuffer, unsigned long frames, unsigned int sampleRate, float reverbWetLevel, float reverbRoomSize, float reverbDryLevel, float reverbDampLevel, float reverbWidth, float reverbMode)
+            
+            //data->reverbEffect(in, out, nframes, 44100, (1.0f/3.0f), 0.5f, 0.0f, 0.25f, 1.0f, 0.0f);
+
+            //data->reverbEffect_2(in, out, nframes, 44100);
+            data->process(in,out,nframes);
+
+
         }
     }
     return 0;
@@ -195,35 +208,35 @@ main ( int argc, char *argv[] )
      * it.
      */
 
-    ports = jack_get_ports ( client, NULL, NULL, JackPortIsOutput );
-    if ( ports == NULL )
-    {
-        fprintf ( stderr, "no physical capture ports\n" );
-        exit ( 1 );
-    }
+    // ports = jack_get_ports ( client, NULL, NULL, JackPortIsOutput );
+    // if ( ports == NULL )
+    // {
+    //     fprintf ( stderr, "no physical capture ports\n" );
+    //     exit ( 1 );
+    // }
 
-    for ( i = 0; i < 2; i++ )
-	{
-	    int res = jack_connect ( client, ports[i], jack_port_name ( input_ports[0] ) );
-		if (res)
-		{
-            fprintf ( stderr, "cannot connect input ports1: %d %d \n",i, res );
-		}
-    }
-    free ( ports );
+    // for ( i = 0; i < 2; i++ )
+	// {
+	//     int res = jack_connect ( client, ports[i], jack_port_name ( input_ports[0] ) );
+	// 	if (res)
+	// 	{
+    //         fprintf ( stderr, "cannot connect input ports1: %d %d \n",i, res );
+	// 	}
+    // }
+    // free ( ports );
 
-    ports = jack_get_ports ( client, NULL, NULL, JackPortIsPhysical|JackPortIsInput );
-    if ( ports == NULL )
-    {
-        fprintf ( stderr, "no physical playback ports\n" );
-        exit ( 1 );
-    }
+    // ports = jack_get_ports ( client, NULL, NULL, JackPortIsPhysical|JackPortIsInput );
+    // if ( ports == NULL )
+    // {
+    //     fprintf ( stderr, "no physical playback ports\n" );
+    //     exit ( 1 );
+    // }
 
-    for ( i = 0; i < 2; i++ )
-        if ( jack_connect ( client, jack_port_name ( output_ports[i] ), ports[i] ) )
-            fprintf ( stderr, "cannot connect input ports2\n" );
+    // for ( i = 0; i < 2; i++ )
+    //     if ( jack_connect ( client, jack_port_name ( output_ports[i] ), ports[i] ) )
+    //         fprintf ( stderr, "cannot connect input ports2\n" );
 
-    free ( ports );
+    // free ( ports );
 
     /* install a signal handler to properly quits jack client */
 #ifdef WIN32
@@ -241,10 +254,11 @@ main ( int argc, char *argv[] )
 
     while (1)
     {
+        a.recieveConfig();
 #ifdef WIN32
         Sleep ( 1000 );
 #else
-        sleep ( 1 );
+        usleep ( 500000 );
 #endif
     }
 

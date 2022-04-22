@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<aj-snapshot>
+<jack>
+  <client name="system">
+    <port name="capture_1">
+      <connection port="effectsApp:input_1" />
+      <connection port="effectsApp:input_2" />
+    </port>
+    <port name="capture_2" />
+  </client>
+  <client name="effectsApp">
+    <port name="output_1" />
+    <port name="output_2">
+      <connection port="system:playback_2" />
+      <connection port="gst-launch-1.0:in_GstreamerJack_1" />
+      <connection port="system:playback_1" />
+    </port>
+  </client>
+</jack>
+</aj-snapshot>

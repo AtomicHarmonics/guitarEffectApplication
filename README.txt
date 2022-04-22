@@ -2,12 +2,17 @@ Dependencies:
 Install required packages before running build steps (if jackd2 asks to enable realtime, select yes):
 sudo apt install jackd2
 sudo apt install libjack-jackd2-dev
-sudo apt install cmake
+sudo apt install cmake 
+sudo apt install aj-snapshot
+sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
 
-Figure out what version of python is installed on your PC by running 'python' or 'python3' in a terminal. For example mine is '3.9.7'. Use that number to determine which packages to install:
-sudo apt-get install python3-matplotlib python3-numpy python3.9-dev
+To use the lcd application, you have to install the luma library, to do so, clone https://github.com/rm-hull/luma.examples and follow the installation instructions.
 
-Also change the audioEffectsLib/graphTests/CMakeLists.txt for your version of python (just the first two numbers) 
+For the internet connectivity to work, you must modify the ip addresses that are hardcoded to be whatever the server's ip is. The files are:
+jackScripts/effectsDisplay.py line: 143
+jackScripts/gstreamer-script line: 4
+audioEffectsLib/src/audioEffects.cpp line:117
+
 
 To clone this project:
 1.) git clone https://github.com/raoufahmed248/guitarEffectApplication.git
@@ -36,9 +41,6 @@ from the application to the output audio device via QJackCtl.
 
 To run the benchmark application:
 1.) build/bin/audioEffectsLibBenchmark
-
-To run the graph test:
-1.) build/bin/audioEffectsLibGraphTests
 
 
 Tips/General Knowledge:
