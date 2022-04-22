@@ -94,11 +94,32 @@ def retrieveConfig(device):
 
 def internet_on():
    try:
-        response = urlopen('https://www.google.com/', timeout=10)
+        response = urlopen('https://www.google.com/', timeout=3)
         return True
    except: 
         return False
-        
+
+def bash(command):
+    output = os.popen(command).read()
+    return output
+
+def serviceTime(serviceName):
+    tempStr = "systemctl --user show " + serviceName + " --property=ActiveEnterTimestampMonotonic"
+    print_me = bash(tempStr)
+    tempStr = int(print_me.split("=")[-1])
+    tempStr = tempStr / 1000000
+    value = time.monotonic()
+    print(tempStr)
+    print(value)
+    mdy = value - tempStr
+    millis = int(mdy)
+    seconds=(mdy)%60
+    seconds = int(seconds)
+    minutes=(mdy/(60))%60
+    minutes = int(minutes)
+    hours=(mdy/(60*60))%24
+    return str(int(hours)) + ":" + str(int(minutes)) + ":" + str(int(seconds))
+
 #TODO: Add Overdrive parameters, add setting if effect is enabled or disabled, eventually add reverb configs when provided
 def updateDisplay(device, inputMessage,byPassStatus,internetVar):
     font_path = str(Path(__file__).resolve().parent.joinpath('fonts', 'ProggyTiny.ttf'))
@@ -120,7 +141,7 @@ def updateDisplay(device, inputMessage,byPassStatus,internetVar):
     eighthLine = str(y["title"]) 
     bypassLine = "Bypass Status:" + str(z["bypassEnabled"])
     internetLine = "Internet Connection Status:" + str(internetVar)
-    
+    serviceLine = "Jack: " + serviceTime("jackServer") + " | Effects: " + serviceTime("effectsService")
     
     
    
@@ -128,17 +149,17 @@ def updateDisplay(device, inputMessage,byPassStatus,internetVar):
     with canvas(device) as draw:
         draw.text((0, 0), zeroLine, font=font2, fill="white")
         if device.height >= 32:
-            draw.text((0, 20),  firstLine, font=font2, fill="white")
-            draw.text((0, 40), secondLine, font=font2, fill="white")
+            draw.text((0, 40),  firstLine, font=font2, fill="white")
+            draw.text((0, 160), secondLine, font=font2, fill="white")
             draw.text((0, 60), thirdLine, font=font2, fill="white")
             draw.text((0, 80), fourthLine, font=font2, fill="white")
             draw.text((0, 100), fifthLine, font=font2, fill="white")
             draw.text((0, 120), sixthLine, font=font2, fill="white")
             draw.text((0, 140), seventhLine, font=font2, fill="white")
-            draw.text((0, 160), eighthLine, font=font2, fill="white")
+            draw.text((0, 20), eighthLine, font=font2, fill="white")
             draw.text((0, 180), bypassLine, font=font2, fill="white")
             draw.text((0, 200), internetLine, font=font2, fill="white")
-          
+            draw.text((0, 220), serviceLine, font=font2, fill="white")
             
            
            
@@ -156,9 +177,10 @@ def updateDisplay(device, inputMessage,byPassStatus,internetVar):
 def main():
 
         while True:
-                x = requests.get('http://192.168.86.31:4996/effectsProfile/selectedProfile/')
-                z = requests.get('http://192.168.86.31:4996/byPass/')
+                x = requests.get('https://www.atomicharmonics.com/flaskApp/effectsProfile/selectedProfile/')
+                z = requests.get('https://www.atomicharmonics.com/flaskApp/byPass/')
                 internetVar = requests.get('https://www.google.com/')
+                print(serviceTime("flaskServer"))
                 print(x.status_code)
                 if(x.status_code == 200 and z.status_code == 200):
                     updateDisplay(device, x.json(),z.json(),internetVar)
